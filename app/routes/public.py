@@ -102,6 +102,18 @@ def home():
         db.session.add(hero_settings)
         db.session.commit()
 
+    services_settings = ServicePageSettings.query.first()
+
+    def media_url(value: str) -> str:
+        clean = (value or "").strip()
+        if not clean:
+            return ""
+        if clean.startswith("http://") or clean.startswith("https://"):
+            return clean
+        return url_for("static", filename=clean.lstrip("/"))
+
+    story_poster_url = media_url(services_settings.story_poster) if services_settings else ""
+
     links = YouTubeLink.query.order_by(YouTubeLink.slot.asc()).all()
 
     def youtube_video_id(url: str) -> str:
@@ -205,7 +217,13 @@ def home():
 
     hero_content = resolve_home_hero_content(hero_settings, getattr(g, "lang", "de"))
 
-    return render_template("public/home.html", links=links, featured_videos=featured_videos, hero_content=hero_content)
+    return render_template(
+        "public/home.html",
+        links=links,
+        featured_videos=featured_videos,
+        hero_content=hero_content,
+        story_poster_url=story_poster_url,
+    )
 
 
 @public_bp.get("/about")

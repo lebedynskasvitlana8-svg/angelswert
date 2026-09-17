@@ -96,7 +96,7 @@
     {% endif %}
   </p>
   <div class="story-poster media-frame media-frame--contain">
-    <img src="{{ hero_image }}" alt="Stronger Than Yesterday poster" loading="lazy">
+    <img src="{{ story_poster_url or hero_image }}" alt="Stronger Than Yesterday poster" loading="lazy">
   </div>
   <div class="cta-row">
     <a class="btn" href="{{ url_for('public.services', lang=lang) }}">{{ 'Explore service system' if not is_de else 'Dienstleistungsystem entdecken' }}</a>
